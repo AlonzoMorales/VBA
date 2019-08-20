@@ -1,0 +1,60 @@
+Sub StockMarketData()
+
+' Set variable to hold Ticker Symbol
+Dim TickerSymbol As String
+
+' Set variable to hold Total Volume
+Dim TotalVolume As Double
+    TotalVolume = 0
+
+' Keep track of each ticker symbol on summary table
+Dim SummaryTableRow As Integer
+    SummaryTableRow = 2
+
+'Create headings for summary table
+Range("J1").Value = "Ticker Symbol"
+Range("K1").Value = "Total Stock Volume"
+
+' Identify last row
+LastRow = Cells(Rows.Count, 1).End(xlUp).Row
+
+' Loop through all ticker symbols
+For i = 2 To LastRow
+
+' Check if we are still on the same ticker symbol...
+If Cells(i + 1, 1).Value <> Cells(i, 1).Value Then
+
+    ' Set the ticker name
+    TickerSymbol = Cells(i, 1).Value
+    
+    ' Add to the total volume
+    TotalVolume = TotalVolume + Cells(i, 7).Value
+    
+    ' Print the ticker symbol on summary table
+    Range("J" & SummaryTableRow).Value = TickerSymbol
+    
+    ' Print ticker total volume on summary table
+    Range("K" & SummaryTableRow).Value = TotalVolume
+    
+    ' Add 1 to the summary table row
+    SummaryTableRow = SummaryTableRow + 1
+    
+    ' Reset the total volume
+    TotalVolume = 0
+    
+    ' If the following row has the same ticker symbol...
+    
+    Else
+    
+    ' Add to the total Volume
+    TotalVolume = TotalVolume + Cells(i, 7).Value
+
+    End If
+    
+    Next i
+
+' Auto-adjust column width on summary table
+Columns("J:K").AutoFit
+
+End Sub
+
